@@ -4,11 +4,12 @@ from sklearn.cluster import KMeans
 from sentence_transformers import SentenceTransformer
 import numpy as np
 
-def calculat_distance(image1, image2):
+def calculat_distance(embedding1,embedding2):
     """ Calculates Euclidean Distance between 2 images """
-    return np.sum((image1-image2)**2)
+    return np.sum((embedding1-embedding2)**2)
 
-def calculate_cosine_similarity(image1, image2):
+def calculate_cosine_similarity(embedding1, embedding2):
+
     
 
 original_image = "assets/photos/original.jpg"
