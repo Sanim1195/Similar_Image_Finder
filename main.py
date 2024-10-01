@@ -5,12 +5,6 @@ import cv2 as cv
 import clip
 from sklearn.cluster import KMeans
 
-# read image
-# resize image maintaining the aspect ratio
-# normalise the resized image
-# get the embeddings
-# check for similarity with cosine similarity and euclidean distance
-
 
 device = "cpu"
 image_path = "assets/photos/aayush.jpeg"
