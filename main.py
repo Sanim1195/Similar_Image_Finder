@@ -3,6 +3,7 @@ import torch
 import numpy as np
 import cv2 as cv
 import clip
+from sklearn.cluster import KMeans
 
 # read image
 # resize image maintaining the aspect ratio
@@ -12,8 +13,8 @@ import clip
 
 
 device = "cpu"
-image_path = "assets/photos/original.jpg"
-image_path2 = "assets/photos/original.jpg"
+image_path = "assets/photos/aayush.jpeg"
+image_path2 = "assets/photos/aayushResized.png"
 
 # Load CLIP model and preprocess function
 model, preprocess = clip.load("ViT-L/14", device, jit=False)
@@ -24,10 +25,12 @@ image2 = preprocess(Image.open(image_path2)).unsqueeze(0).to(device)
 
 print("The data type of images after being processed is: ", type(image))
 
-def calculate_distance(embedding1,embedding2):
+
+def calculate_distance(embedding1, embedding2):
     """ Calculates Euclidean Distance between 2 images """
     dist = torch.nn.functional.pairwise_distance(embedding1, embedding2)
-    return(dist)
+    return (dist)
+
 
 def calculate_cosine_similarity(embedding1, embedding2):
     """ Calculates Cosine Similarity between 2 image embeddings """
@@ -46,8 +49,9 @@ def resize_with_aspect_ratio(raw_image_path, new_width):
 
     # Resize the image
     resized_image = cv.resize(original_image, (new_width, calculated_height))
-    print("Newly Resized images shape: " , resized_image.shape)
+    print("Newly Resized images shape: ", resized_image.shape)
     cv.imshow("Screen", resized_image)
+    cv.imwrite("aayushResized.png", resized_image)
     cv.waitKey(0)
     cv.destroyAllWindows()
 
@@ -59,35 +63,37 @@ def normalize(image):
     channel_stds = np.std(image, axis=(0, 1))
     print(channel_stds)
     # Normalize by dividing image by the channel standard deviations
-    normalized_image = image  / channel_stds
-    return(normalized_image)
+    normalized_image = image / channel_stds
+    return (normalized_image)
 
 
-# Get image embeddings from the model
+def clutster(image):
+    kmeans = KMeans(n_clusters=2, random_state=0, n_init="auto").fit(X)
+
+
+# Get image embeddings from the model 
 with torch.no_grad():
     emb1 = model.encode_image(image)
     emb2 = model.encode_image(image2)
 
-print("The data type of embeddings are: ", type(emb1) , "And ", type(emb2))
+print("The data type of embeddings are: ", type(emb1), "And ", type(emb2))
+# print(emb1, "\n ", emb2)
 
 # Calculate cosine similarity between embeddings
 similarity = calculate_cosine_similarity(emb1, emb2)
-distance = calculate_distance(emb1,emb2)
+distance = calculate_distance(emb1, emb2)
 
 print(f"Cosine Similarity: {similarity.item()}  {type(similarity)}")
 print(f"Euclidean Distance: {distance.item()} {type(similarity)}")
 
-
-
-
-
-
+X = np.array(emb1, emb2)
+# np.array(emb2)
 # using clustering algo[k means] to cluster the tensors together:
+
 # kmean = KMeans
 
 
-
-# TODO Loop through image folder and find all images 
+# TODO Loop through image folder and find all images
 # TODO Store embeddings in a list with it's corresponding images path
 # TODO store the embeddings from list to a database
 # TODO use caching to store and work with temp memory
