@@ -37,3 +37,6 @@ for i, labels in enumerate(cluster_labels):
 # viewing our final cluster
 for i, (key, value) in enumerate(image_cluster_map.items()):
     print(key, " labelled as: ", value)
+
+
+# plot similar grouped images using matplot
