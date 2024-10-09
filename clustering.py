@@ -4,8 +4,10 @@ import clip
 from PIL import Image
 import numpy as np
 from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
 
 device = "cpu"
+# Use the clip module to load your model and set-up cpu or gpu. Returns the model and preprocessor for the model
 model, preprocess = clip.load("ViT-L/14", device, jit=False)
 # labels = ["a", "a", "a", "b", "b", "b", "c", "c", "d"]
 name_list = []
@@ -14,7 +16,7 @@ np_array = []
 # looping through image folder
 for photos in os.listdir("assets/photos"):
     image_path = os.path.join("assets/photos", photos)
-    # Pre processing images and getting their tensor
+    # Pre processing images and getting their tensor. Thew  .unsqueeze(input,index)turns a new tensor with a dimension of size one inserted at the specified position.
     image = preprocess(Image.open(image_path)).unsqueeze(0).to(device)
     name_list.append(photos)
     # Flatten the higher dimension of tensors to like 2dim
@@ -40,3 +42,4 @@ for i, (key, value) in enumerate(image_cluster_map.items()):
 
 
 # plot similar grouped images using matplot
+

@@ -7,8 +7,9 @@ from sklearn.cluster import KMeans
 
 
 device = "cpu"
-image_path = "assets/photos/aayush.jpeg"
-image_path2 = "assets/photos/aayushResized.png"
+image_path = "assets/photos/original.jpg"
+image_path2 = "assets/photos/second.jpg"
+
 
 # Load CLIP model and preprocess function
 model, preprocess = clip.load("ViT-L/14", device, jit=False)
@@ -80,7 +81,11 @@ distance = calculate_distance(emb1, emb2)
 print(f"Cosine Similarity: {similarity.item()}  {type(similarity)}")
 print(f"Euclidean Distance: {distance.item()} {type(similarity)}")
 
-X = np.array(emb1, emb2)
+# plotting based on simililarity :
+
+
+
+# X = np.array(emb1, emb2)
 # np.array(emb2)
 # using clustering algo[k means] to cluster the tensors together:
 
